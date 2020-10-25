@@ -1,0 +1,52 @@
+﻿@model IEnumerable<FPTApp.ViewModels.UsersInRole>
+@{
+	ViewBag.Title = "Users With Roles";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+	<div>
+		<h3 class="box-title">
+			<b>Users with Roles</b>
+		</h3>
+	</div>
+	@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+	{
+		<p class="text-primary m-0 font-weight-bold">
+			@Html.ActionLink("New user", "Register", "Account")
+			@*<a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info float-right"><i class="fas fa-plus"></i>&nbsp; New User</a>*@
+		</p>
+		
+	}
+
+	<div>
+		<table class="table table-hover table-bordered table-condensed" id="UsersWithRoles">
+			<thead>
+				<tr>
+					<td><b>Username</b></td>
+					<td><b>Email</b></td>
+					<td><b>Roles</b></td>
+					<td><b></b></td>
+				</tr>
+			</thead>
+			@foreach (var user in Model)
+			{
+				<tr>
+					<td>@user.Username</td>
+					<td>@user.Email</td>
+					<td>@user.Role</td>
+
+					@if (Request.IsAuthenticated && User.IsInRole("Admin"))
+					{
+						<td>@Html.ActionLink("Edit", "Edit", new { id = user.UserId })</td>
+						<td>@Html.ActionLink("Delete", "Delete", new { id = user.UserId })</td>
+					}
+
+
+				</tr>
+
+			}
+		</table>
+	</div>
+
+</div>
